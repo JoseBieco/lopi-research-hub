@@ -1,0 +1,67 @@
+{
+  "common": {
+    "home": "Home",
+    "about": "About",
+    "team": "Team",
+    "projects": "Projects",
+    "tools": "Tools",
+    "publications": "Publications",
+    "news": "News",
+    "research_areas": "Research Areas",
+    "admin": "Admin",
+    "login": "Login",
+    "logout": "Logout",
+    "search": "Search",
+    "language": "Language"
+  },
+  "home": {
+    "title": "Academic Platform",
+    "subtitle": "Research Group",
+    "hero_text": "We centralize the scientific production and tools of our research group"
+  },
+  "team": {
+    "title": "Our Team",
+    "subtitle": "Meet the members of the group",
+    "professors": "Professors",
+    "postdocs": "Postdoctoral Researchers",
+    "phd_students": "PhD Students",
+    "masters_students": "Master's Students",
+    "undergrad_students": "Undergraduate Researchers",
+    "alumni": "Alumni"
+  },
+  "projects": {
+    "title": "Projects",
+    "in_progress": "In Progress",
+    "completed": "Completed",
+    "funding_agency": "Funding Agency",
+    "members": "Members"
+  },
+  "publications": {
+    "title": "Publications",
+    "filter_by_year": "Filter by Year",
+    "filter_by_type": "Filter by Type",
+    "filter_by_author": "Filter by Author",
+    "journal": "Journal",
+    "conference": "Conference",
+    "book_chapter": "Book Chapter",
+    "thesis": "Thesis/Dissertation",
+    "copy_bibtex": "Copy BibTeX",
+    "view_doi": "View DOI"
+  },
+  "tools": {
+    "title": "Tools & Platforms",
+    "subtitle": "Software and systems developed by the group",
+    "access": "Access",
+    "github": "GitHub",
+    "documentation": "Documentation"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "dashboard": "Dashboard",
+    "members": "Manage Members",
+    "projects": "Manage Projects",
+    "publications": "Manage Publications",
+    "tools": "Manage Tools",
+    "news": "Manage News"
+  }
+}

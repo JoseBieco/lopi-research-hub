@@ -1,0 +1,67 @@
+{
+  "common": {
+    "home": "Início",
+    "about": "Sobre",
+    "team": "Equipe",
+    "projects": "Projetos",
+    "tools": "Ferramentas",
+    "publications": "Publicações",
+    "news": "Notícias",
+    "research_areas": "Linhas de Pesquisa",
+    "admin": "Administração",
+    "login": "Entrar",
+    "logout": "Sair",
+    "search": "Buscar",
+    "language": "Idioma"
+  },
+  "home": {
+    "title": "Plataforma Acadêmica",
+    "subtitle": "Grupo de Pesquisa",
+    "hero_text": "Centralizamos a produção científica e as ferramentas do nosso grupo de pesquisa"
+  },
+  "team": {
+    "title": "Nossa Equipe",
+    "subtitle": "Conheça os membros do grupo",
+    "professors": "Professores",
+    "postdocs": "Pós-Doutorandos",
+    "phd_students": "Doutorandos",
+    "masters_students": "Mestrandos",
+    "undergrad_students": "Iniciação Científica",
+    "alumni": "Alumni/Egressos"
+  },
+  "projects": {
+    "title": "Projetos",
+    "in_progress": "Em Andamento",
+    "completed": "Concluídos",
+    "funding_agency": "Agência de Fomento",
+    "members": "Membros"
+  },
+  "publications": {
+    "title": "Publicações",
+    "filter_by_year": "Filtrar por Ano",
+    "filter_by_type": "Filtrar por Tipo",
+    "filter_by_author": "Filtrar por Autor",
+    "journal": "Periódico",
+    "conference": "Conferência",
+    "book_chapter": "Capítulo de Livro",
+    "thesis": "Tese/Dissertação",
+    "copy_bibtex": "Copiar BibTeX",
+    "view_doi": "Ver DOI"
+  },
+  "tools": {
+    "title": "Ferramentas e Plataformas",
+    "subtitle": "Softwares e sistemas desenvolvidos pelo grupo",
+    "access": "Acessar",
+    "github": "GitHub",
+    "documentation": "Documentação"
+  },
+  "admin": {
+    "title": "Painel Administrativo",
+    "dashboard": "Dashboard",
+    "members": "Gerenciar Membros",
+    "projects": "Gerenciar Projetos",
+    "publications": "Gerenciar Publicações",
+    "tools": "Gerenciar Ferramentas",
+    "news": "Gerenciar Notícias"
+  }
+}
