@@ -19,7 +19,6 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = useTranslations();
 
   if (!locales.includes(locale)) {
     notFound();
@@ -35,7 +34,9 @@ export default async function LocaleLayout({
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:bg-black focus:text-white focus:p-2 focus:rounded"
         >
-          {t("skip_main_content")}
+          {locale === "pt"
+            ? "Pular para conteúdo principal"
+            : "Skip to main content"}
         </a>
         <Header />
         {children}
