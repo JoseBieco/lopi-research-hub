@@ -66,6 +66,8 @@ export default function PublicationsAdminPage() {
     conference: "Conferência",
     book_chapter: "Capítulo",
     thesis: "Tese",
+    workshop: "Workshop",
+    proceedings: "Anais",
   };
 
   return (

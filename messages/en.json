@@ -55,6 +55,8 @@
     "conference": "Conference",
     "book_chapter": "Book Chapter",
     "thesis": "Thesis/Dissertation",
+    "workshop": "Workshop",
+    "proceedings": "Proceedings",
     "copy_bibtex": "Copy BibTeX",
     "view_doi": "View DOI"
   },

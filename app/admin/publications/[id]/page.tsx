@@ -191,10 +191,12 @@ export default function EditPublicationPage({ params }: PageProps) {
                     />
                   </div>
                   <div className="space-y-2 sm:col-span-2">
-                    <Label htmlFor="type">Tipo *</Label>
+                    <Label htmlFor="publication_type">Tipo *</Label>
                     <Select
                       value={formData.publication_type}
-                      onValueChange={(value) => handleChange("type", value)}
+                      onValueChange={(value) =>
+                        handleChange("publication_type", value)
+                      }
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -206,6 +208,8 @@ export default function EditPublicationPage({ params }: PageProps) {
                           Capítulo de Livro
                         </SelectItem>
                         <SelectItem value="thesis">Tese/Dissertação</SelectItem>
+                        <SelectItem value="workshop">Workshop</SelectItem>
+                        <SelectItem value="proceedings">Anais</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

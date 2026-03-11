@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS publications (
   title TEXT NOT NULL,
   abstract_pt TEXT,
   abstract_en TEXT,
-  publication_type TEXT NOT NULL CHECK (publication_type IN ('journal', 'conference', 'book_chapter', 'thesis')),
+  publication_type TEXT NOT NULL CHECK (publication_type IN ('journal', 'conference', 'book_chapter', 'thesis', 'workshop', 'proceedings')),
   venue TEXT,
   year INTEGER NOT NULL,
   doi TEXT,

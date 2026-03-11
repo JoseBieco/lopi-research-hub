@@ -55,6 +55,8 @@
     "conference": "Conferência",
     "book_chapter": "Capítulo de Livro",
     "thesis": "Tese/Dissertação",
+    "workshop": "Workshop",
+    "proceedings": "Anais",
     "copy_bibtex": "Copiar BibTeX",
     "view_doi": "Ver DOI"
   },
