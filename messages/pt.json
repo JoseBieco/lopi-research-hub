@@ -17,7 +17,17 @@
   "home": {
     "title": "Plataforma Acadêmica",
     "subtitle": "Grupo de Pesquisa",
-    "hero_text": "Centralizamos a produção científica e as ferramentas do nosso grupo de pesquisa"
+    "hero_text": "Centralizamos a produção científica e as ferramentas do nosso grupo de pesquisa",
+    "research_group": "Explore o Grupo de Pesquisa",
+    "team_description": "Conheça os membros do grupo, desde docentes até alunos de iniciação científica.",
+    "see_team": "Ver equipe →",
+    "publications_description": "Acesse artigos em periódicos, conferências e capítulos de livros publicados pelo grupo.",
+    "see_publications": "Ver publicações →",
+    "tools_description": "Explore as plataformas e softwares open-source desenvolvidos pelo grupo.",
+    "see_tools": "Ver ferramentas →",
+    "latest_news": "Últimas Notícias",
+    "latest_news_description": "Acompanhe os últimos acontecimentos do grupo: defesas, prêmios e publicações destaque.",
+    "see_news": "Ver notícias"
   },
   "team": {
     "title": "Nossa Equipe",
@@ -63,5 +73,6 @@
     "publications": "Gerenciar Publicações",
     "tools": "Gerenciar Ferramentas",
     "news": "Gerenciar Notícias"
-  }
+  },
+  "skip_main_content": "Pular para conteúdo principal"
 }

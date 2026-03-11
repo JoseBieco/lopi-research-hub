@@ -94,9 +94,12 @@ CREATE TABLE IF NOT EXISTS news (
   slug TEXT UNIQUE NOT NULL,
   title_pt TEXT NOT NULL,
   title_en TEXT,
+  excerpt_pt TEXT,
+  excerpt_en TEXT,
   content_pt TEXT,
   content_en TEXT,
-  news_type TEXT CHECK (news_type IN ('defense', 'award', 'publication', 'grant', 'general')),
+  cover_image_url TEXT,
+  news_type TEXT CHECK (news_type IN ('defense', 'award', 'publication', 'grant', 'general', 'event')),
   published_at TIMESTAMPTZ DEFAULT now(),
   is_published BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT now(),
@@ -220,3 +223,30 @@ CREATE INDEX IF NOT EXISTS idx_publications_year ON publications(year);
 CREATE INDEX IF NOT EXISTS idx_publications_type ON publications(publication_type);
 CREATE INDEX IF NOT EXISTS idx_news_published_at ON news(published_at);
 CREATE INDEX IF NOT EXISTS idx_news_is_published ON news(is_published);
+
+-- =============================================
+-- Atualizações / Adição de Colunas
+-- =============================================
+
+-- Atualizações para MEMBERS
+ALTER TABLE members 
+ADD COLUMN current_role_pt TEXT,
+ADD COLUMN current_role_en TEXT,
+ADD COLUMN website_url TEXT;
+
+-- Atualizações para PROJECTS
+ALTER TABLE projects 
+ADD COLUMN objectives_pt TEXT,
+ADD COLUMN objectives_en TEXT,
+ADD COLUMN results_pt TEXT,
+ADD COLUMN results_en TEXT,
+ADD COLUMN funding_code TEXT,
+ADD COLUMN website_url TEXT;
+
+-- Atualizações para PUBLICATIONS
+ALTER TABLE publications 
+ADD COLUMN authors TEXT;
+
+-- Atualizações para TOOLS
+ALTER TABLE tools 
+ADD COLUMN tags TEXT[];

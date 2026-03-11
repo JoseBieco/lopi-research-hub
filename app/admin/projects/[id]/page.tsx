@@ -1,112 +1,127 @@
-'use client'
+"use client";
 
-import { useState, useEffect, use } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft, Save, Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { AdminSidebar } from '@/components/admin-sidebar'
-import { createClient } from '@/lib/supabase/client'
+import { useState, useEffect, use } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, Save, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { AdminSidebar } from "@/components/admin-sidebar";
+import { createClient } from "@/lib/supabase/client";
 
 interface PageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }
 
 export default function EditProjectPage({ params }: PageProps) {
-  const { id } = use(params)
-  const router = useRouter()
-  const isNew = id === 'new'
-  const [loading, setLoading] = useState(!isNew)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { id } = use(params);
+  const router = useRouter();
+  const isNew = id === "new";
+  const [loading, setLoading] = useState(!isNew);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
-    title_pt: '',
-    title_en: '',
-    slug: '',
-    description_pt: '',
-    description_en: '',
-    objectives_pt: '',
-    objectives_en: '',
-    results_pt: '',
-    results_en: '',
-    status: 'active',
-    funding_agency: '',
-    funding_code: '',
-    start_date: '',
-    end_date: '',
-    website_url: '',
-  })
+    title_pt: "",
+    title_en: "",
+    slug: "",
+    description_pt: "",
+    description_en: "",
+    objectives_pt: "",
+    objectives_en: "",
+    results_pt: "",
+    results_en: "",
+    status: "in_progress",
+    funding_agency: "",
+    funding_code: "",
+    start_date: "",
+    end_date: "",
+    website_url: "",
+  });
 
   useEffect(() => {
     if (!isNew) {
-      fetchProject()
+      fetchProject();
     }
-  }, [id, isNew])
+  }, [id, isNew]);
 
   const fetchProject = async () => {
     try {
-      const supabase = createClient()
+      const supabase = createClient();
       const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('id', id)
-        .single()
+        .from("projects")
+        .select("*")
+        .eq("id", id)
+        .single();
 
-      if (error) throw error
+      if (error) throw error;
       if (data) {
         setFormData({
           ...data,
-          start_date: data.start_date || '',
-          end_date: data.end_date || '',
-        })
+          start_date: data.start_date || "",
+          end_date: data.end_date || "",
+        });
       }
     } catch (err) {
-      console.error('Error fetching project:', err)
-      setError('Erro ao carregar projeto')
+      console.error("Error fetching project:", err);
+      setError("Erro ao carregar projeto");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSaving(true)
-    setError(null)
+    e.preventDefault();
+    setSaving(true);
+    setError(null);
 
     try {
-      const supabase = createClient()
+      const supabase = createClient();
       const dataToSave = {
         ...formData,
         start_date: formData.start_date || null,
         end_date: formData.end_date || null,
-      }
+      };
 
       if (isNew) {
-        const { error } = await supabase.from('projects').insert([dataToSave])
-        if (error) throw error
+        const { error } = await supabase.from("projects").insert([dataToSave]);
+        if (error) throw error;
       } else {
-        const { error } = await supabase.from('projects').update(dataToSave).eq('id', id)
-        if (error) throw error
+        const { error } = await supabase
+          .from("projects")
+          .update(dataToSave)
+          .eq("id", id);
+        if (error) throw error;
       }
 
-      router.push('/admin/projects')
+      router.push("/admin/projects");
     } catch (err) {
-      console.error('Error saving project:', err)
-      setError('Erro ao salvar projeto')
+      console.error("Error saving project:", err);
+      setError("Erro ao salvar projeto");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   const handleChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   if (loading) {
     return (
@@ -116,7 +131,7 @@ export default function EditProjectPage({ params }: PageProps) {
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </main>
       </div>
-    )
+    );
   }
 
   return (
@@ -134,10 +149,12 @@ export default function EditProjectPage({ params }: PageProps) {
             </Button>
             <div>
               <h1 className="text-2xl font-bold">
-                {isNew ? 'Novo Projeto' : 'Editar Projeto'}
+                {isNew ? "Novo Projeto" : "Editar Projeto"}
               </h1>
               <p className="text-muted-foreground">
-                {isNew ? 'Adicione um novo projeto' : 'Atualize as informações do projeto'}
+                {isNew
+                  ? "Adicione um novo projeto"
+                  : "Atualize as informações do projeto"}
               </p>
             </div>
           </div>
@@ -161,7 +178,7 @@ export default function EditProjectPage({ params }: PageProps) {
                     <Input
                       id="title_pt"
                       value={formData.title_pt}
-                      onChange={(e) => handleChange('title_pt', e.target.value)}
+                      onChange={(e) => handleChange("title_pt", e.target.value)}
                       required
                     />
                   </div>
@@ -169,8 +186,8 @@ export default function EditProjectPage({ params }: PageProps) {
                     <Label htmlFor="title_en">Título (EN)</Label>
                     <Input
                       id="title_en"
-                      value={formData.title_en || ''}
-                      onChange={(e) => handleChange('title_en', e.target.value)}
+                      value={formData.title_en || ""}
+                      onChange={(e) => handleChange("title_en", e.target.value)}
                     />
                   </div>
                 </div>
@@ -181,7 +198,7 @@ export default function EditProjectPage({ params }: PageProps) {
                     <Input
                       id="slug"
                       value={formData.slug}
-                      onChange={(e) => handleChange('slug', e.target.value)}
+                      onChange={(e) => handleChange("slug", e.target.value)}
                       required
                     />
                   </div>
@@ -189,13 +206,15 @@ export default function EditProjectPage({ params }: PageProps) {
                     <Label htmlFor="status">Status *</Label>
                     <Select
                       value={formData.status}
-                      onValueChange={(value) => handleChange('status', value)}
+                      onValueChange={(value) => handleChange("status", value)}
                     >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="active">Em Andamento</SelectItem>
+                        <SelectItem value="in_progress">
+                          Em Andamento
+                        </SelectItem>
                         <SelectItem value="completed">Concluído</SelectItem>
                       </SelectContent>
                     </Select>
@@ -207,8 +226,10 @@ export default function EditProjectPage({ params }: PageProps) {
                     <Label htmlFor="funding_agency">Agência de Fomento</Label>
                     <Input
                       id="funding_agency"
-                      value={formData.funding_agency || ''}
-                      onChange={(e) => handleChange('funding_agency', e.target.value)}
+                      value={formData.funding_agency || ""}
+                      onChange={(e) =>
+                        handleChange("funding_agency", e.target.value)
+                      }
                       placeholder="Ex: CNPq, FAPESP"
                     />
                   </div>
@@ -216,8 +237,10 @@ export default function EditProjectPage({ params }: PageProps) {
                     <Label htmlFor="funding_code">Código do Projeto</Label>
                     <Input
                       id="funding_code"
-                      value={formData.funding_code || ''}
-                      onChange={(e) => handleChange('funding_code', e.target.value)}
+                      value={formData.funding_code || ""}
+                      onChange={(e) =>
+                        handleChange("funding_code", e.target.value)
+                      }
                     />
                   </div>
                 </div>
@@ -228,8 +251,10 @@ export default function EditProjectPage({ params }: PageProps) {
                     <Input
                       id="start_date"
                       type="date"
-                      value={formData.start_date || ''}
-                      onChange={(e) => handleChange('start_date', e.target.value)}
+                      value={formData.start_date || ""}
+                      onChange={(e) =>
+                        handleChange("start_date", e.target.value)
+                      }
                     />
                   </div>
                   <div className="space-y-2">
@@ -237,8 +262,8 @@ export default function EditProjectPage({ params }: PageProps) {
                     <Input
                       id="end_date"
                       type="date"
-                      value={formData.end_date || ''}
-                      onChange={(e) => handleChange('end_date', e.target.value)}
+                      value={formData.end_date || ""}
+                      onChange={(e) => handleChange("end_date", e.target.value)}
                     />
                   </div>
                 </div>
@@ -248,8 +273,10 @@ export default function EditProjectPage({ params }: PageProps) {
                   <Input
                     id="website_url"
                     type="url"
-                    value={formData.website_url || ''}
-                    onChange={(e) => handleChange('website_url', e.target.value)}
+                    value={formData.website_url || ""}
+                    onChange={(e) =>
+                      handleChange("website_url", e.target.value)
+                    }
                   />
                 </div>
               </CardContent>
@@ -265,8 +292,10 @@ export default function EditProjectPage({ params }: PageProps) {
                   <Label htmlFor="description_pt">Descrição (PT)</Label>
                   <Textarea
                     id="description_pt"
-                    value={formData.description_pt || ''}
-                    onChange={(e) => handleChange('description_pt', e.target.value)}
+                    value={formData.description_pt || ""}
+                    onChange={(e) =>
+                      handleChange("description_pt", e.target.value)
+                    }
                     rows={4}
                   />
                 </div>
@@ -274,8 +303,10 @@ export default function EditProjectPage({ params }: PageProps) {
                   <Label htmlFor="description_en">Descrição (EN)</Label>
                   <Textarea
                     id="description_en"
-                    value={formData.description_en || ''}
-                    onChange={(e) => handleChange('description_en', e.target.value)}
+                    value={formData.description_en || ""}
+                    onChange={(e) =>
+                      handleChange("description_en", e.target.value)
+                    }
                     rows={4}
                   />
                 </div>
@@ -292,8 +323,10 @@ export default function EditProjectPage({ params }: PageProps) {
                   <Label htmlFor="objectives_pt">Objetivos (PT)</Label>
                   <Textarea
                     id="objectives_pt"
-                    value={formData.objectives_pt || ''}
-                    onChange={(e) => handleChange('objectives_pt', e.target.value)}
+                    value={formData.objectives_pt || ""}
+                    onChange={(e) =>
+                      handleChange("objectives_pt", e.target.value)
+                    }
                     rows={4}
                   />
                 </div>
@@ -301,8 +334,10 @@ export default function EditProjectPage({ params }: PageProps) {
                   <Label htmlFor="objectives_en">Objetivos (EN)</Label>
                   <Textarea
                     id="objectives_en"
-                    value={formData.objectives_en || ''}
-                    onChange={(e) => handleChange('objectives_en', e.target.value)}
+                    value={formData.objectives_en || ""}
+                    onChange={(e) =>
+                      handleChange("objectives_en", e.target.value)
+                    }
                     rows={4}
                   />
                 </div>
@@ -319,8 +354,8 @@ export default function EditProjectPage({ params }: PageProps) {
                   <Label htmlFor="results_pt">Resultados (PT)</Label>
                   <Textarea
                     id="results_pt"
-                    value={formData.results_pt || ''}
-                    onChange={(e) => handleChange('results_pt', e.target.value)}
+                    value={formData.results_pt || ""}
+                    onChange={(e) => handleChange("results_pt", e.target.value)}
                     rows={4}
                   />
                 </div>
@@ -328,8 +363,8 @@ export default function EditProjectPage({ params }: PageProps) {
                   <Label htmlFor="results_en">Resultados (EN)</Label>
                   <Textarea
                     id="results_en"
-                    value={formData.results_en || ''}
-                    onChange={(e) => handleChange('results_en', e.target.value)}
+                    value={formData.results_en || ""}
+                    onChange={(e) => handleChange("results_en", e.target.value)}
                     rows={4}
                   />
                 </div>
@@ -347,7 +382,7 @@ export default function EditProjectPage({ params }: PageProps) {
                 ) : (
                   <>
                     <Save className="h-4 w-4 mr-2" />
-                    {isNew ? 'Criar Projeto' : 'Salvar Alterações'}
+                    {isNew ? "Criar Projeto" : "Salvar Alterações"}
                   </>
                 )}
               </Button>
@@ -359,5 +394,5 @@ export default function EditProjectPage({ params }: PageProps) {
         </div>
       </main>
     </div>
-  )
+  );
 }

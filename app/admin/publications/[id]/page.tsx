@@ -1,97 +1,109 @@
-'use client'
+"use client";
 
-import { useState, useEffect, use } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft, Save, Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { AdminSidebar } from '@/components/admin-sidebar'
-import { createClient } from '@/lib/supabase/client'
+import { useState, useEffect, use } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, Save, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { AdminSidebar } from "@/components/admin-sidebar";
+import { createClient } from "@/lib/supabase/client";
 
 interface PageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }
 
 export default function EditPublicationPage({ params }: PageProps) {
-  const { id } = use(params)
-  const router = useRouter()
-  const isNew = id === 'new'
-  const [loading, setLoading] = useState(!isNew)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { id } = use(params);
+  const router = useRouter();
+  const isNew = id === "new";
+  const [loading, setLoading] = useState(!isNew);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
-    title: '',
-    authors: '',
+    title: "",
+    authors: "",
     year: new Date().getFullYear(),
-    type: 'journal',
-    venue: '',
-    doi: '',
-    pdf_url: '',
-    bibtex: '',
-    abstract: '',
-  })
+    publication_type: "journal",
+    venue: "",
+    doi: "",
+    pdf_url: "",
+    bibtex: "",
+    abstract_pt: "",
+    abstract_en: "",
+  });
 
   useEffect(() => {
     if (!isNew) {
-      fetchPublication()
+      fetchPublication();
     }
-  }, [id, isNew])
+  }, [id, isNew]);
 
   const fetchPublication = async () => {
     try {
-      const supabase = createClient()
+      const supabase = createClient();
       const { data, error } = await supabase
-        .from('publications')
-        .select('*')
-        .eq('id', id)
-        .single()
+        .from("publications")
+        .select("*")
+        .eq("id", id)
+        .single();
 
-      if (error) throw error
+      if (error) throw error;
       if (data) {
-        setFormData(data)
+        setFormData(data);
       }
     } catch (err) {
-      console.error('Error fetching publication:', err)
-      setError('Erro ao carregar publicação')
+      console.error("Error fetching publication:", err);
+      setError("Erro ao carregar publicação");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSaving(true)
-    setError(null)
+    e.preventDefault();
+    setSaving(true);
+    setError(null);
 
     try {
-      const supabase = createClient()
+      const supabase = createClient();
 
       if (isNew) {
-        const { error } = await supabase.from('publications').insert([formData])
-        if (error) throw error
+        const { error } = await supabase
+          .from("publications")
+          .insert([formData]);
+        if (error) throw error;
       } else {
-        const { error } = await supabase.from('publications').update(formData).eq('id', id)
-        if (error) throw error
+        const { error } = await supabase
+          .from("publications")
+          .update(formData)
+          .eq("id", id);
+        if (error) throw error;
       }
 
-      router.push('/admin/publications')
+      router.push("/admin/publications");
     } catch (err) {
-      console.error('Error saving publication:', err)
-      setError('Erro ao salvar publicação')
+      console.error("Error saving publication:", err);
+      setError("Erro ao salvar publicação");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   const handleChange = (field: string, value: string | number) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   if (loading) {
     return (
@@ -101,7 +113,7 @@ export default function EditPublicationPage({ params }: PageProps) {
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </main>
       </div>
-    )
+    );
   }
 
   return (
@@ -119,10 +131,12 @@ export default function EditPublicationPage({ params }: PageProps) {
             </Button>
             <div>
               <h1 className="text-2xl font-bold">
-                {isNew ? 'Nova Publicação' : 'Editar Publicação'}
+                {isNew ? "Nova Publicação" : "Editar Publicação"}
               </h1>
               <p className="text-muted-foreground">
-                {isNew ? 'Adicione uma nova publicação' : 'Atualize as informações'}
+                {isNew
+                  ? "Adicione uma nova publicação"
+                  : "Atualize as informações"}
               </p>
             </div>
           </div>
@@ -145,7 +159,7 @@ export default function EditPublicationPage({ params }: PageProps) {
                   <Input
                     id="title"
                     value={formData.title}
-                    onChange={(e) => handleChange('title', e.target.value)}
+                    onChange={(e) => handleChange("title", e.target.value)}
                     required
                   />
                 </div>
@@ -155,7 +169,7 @@ export default function EditPublicationPage({ params }: PageProps) {
                   <Input
                     id="authors"
                     value={formData.authors}
-                    onChange={(e) => handleChange('authors', e.target.value)}
+                    onChange={(e) => handleChange("authors", e.target.value)}
                     placeholder="Silva, J.; Santos, M.; Oliveira, P."
                     required
                   />
@@ -170,15 +184,17 @@ export default function EditPublicationPage({ params }: PageProps) {
                       min="1900"
                       max="2100"
                       value={formData.year}
-                      onChange={(e) => handleChange('year', parseInt(e.target.value))}
+                      onChange={(e) =>
+                        handleChange("year", parseInt(e.target.value))
+                      }
                       required
                     />
                   </div>
                   <div className="space-y-2 sm:col-span-2">
                     <Label htmlFor="type">Tipo *</Label>
                     <Select
-                      value={formData.type}
-                      onValueChange={(value) => handleChange('type', value)}
+                      value={formData.publication_type}
+                      onValueChange={(value) => handleChange("type", value)}
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -186,7 +202,9 @@ export default function EditPublicationPage({ params }: PageProps) {
                       <SelectContent>
                         <SelectItem value="journal">Periódico</SelectItem>
                         <SelectItem value="conference">Conferência</SelectItem>
-                        <SelectItem value="book_chapter">Capítulo de Livro</SelectItem>
+                        <SelectItem value="book_chapter">
+                          Capítulo de Livro
+                        </SelectItem>
                         <SelectItem value="thesis">Tese/Dissertação</SelectItem>
                       </SelectContent>
                     </Select>
@@ -197,8 +215,8 @@ export default function EditPublicationPage({ params }: PageProps) {
                   <Label htmlFor="venue">Veículo de Publicação</Label>
                   <Input
                     id="venue"
-                    value={formData.venue || ''}
-                    onChange={(e) => handleChange('venue', e.target.value)}
+                    value={formData.venue || ""}
+                    onChange={(e) => handleChange("venue", e.target.value)}
                     placeholder="Ex: Journal of Optimization Theory, ICML 2024"
                   />
                 </div>
@@ -216,8 +234,8 @@ export default function EditPublicationPage({ params }: PageProps) {
                     <Label htmlFor="doi">DOI</Label>
                     <Input
                       id="doi"
-                      value={formData.doi || ''}
-                      onChange={(e) => handleChange('doi', e.target.value)}
+                      value={formData.doi || ""}
+                      onChange={(e) => handleChange("doi", e.target.value)}
                       placeholder="10.1000/xyz123"
                     />
                   </div>
@@ -226,8 +244,8 @@ export default function EditPublicationPage({ params }: PageProps) {
                     <Input
                       id="pdf_url"
                       type="url"
-                      value={formData.pdf_url || ''}
-                      onChange={(e) => handleChange('pdf_url', e.target.value)}
+                      value={formData.pdf_url || ""}
+                      onChange={(e) => handleChange("pdf_url", e.target.value)}
                     />
                   </div>
                 </div>
@@ -241,11 +259,24 @@ export default function EditPublicationPage({ params }: PageProps) {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <Label htmlFor="abstract">Abstract</Label>
+                  <Label htmlFor="abstract_pt">Resumo</Label>
                   <Textarea
-                    id="abstract"
-                    value={formData.abstract || ''}
-                    onChange={(e) => handleChange('abstract', e.target.value)}
+                    id="abstract_pt"
+                    value={formData.abstract_pt || ""}
+                    onChange={(e) =>
+                      handleChange("abstract_pt", e.target.value)
+                    }
+                    rows={4}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="abstract_en">Abstract</Label>
+                  <Textarea
+                    id="abstract_en"
+                    value={formData.abstract_en || ""}
+                    onChange={(e) =>
+                      handleChange("abstract_en", e.target.value)
+                    }
                     rows={4}
                   />
                 </div>
@@ -262,11 +293,13 @@ export default function EditPublicationPage({ params }: PageProps) {
                   <Label htmlFor="bibtex">Citação BibTeX</Label>
                   <Textarea
                     id="bibtex"
-                    value={formData.bibtex || ''}
-                    onChange={(e) => handleChange('bibtex', e.target.value)}
+                    value={formData.bibtex || ""}
+                    onChange={(e) => handleChange("bibtex", e.target.value)}
                     rows={8}
                     className="font-mono text-sm"
-                    placeholder={'@article{silva2024,\n  author = {Silva, João},\n  title = {Título do Artigo},\n  journal = {Revista},\n  year = {2024}\n}'}
+                    placeholder={
+                      "@article{silva2024,\n  author = {Silva, João},\n  title = {Título do Artigo},\n  journal = {Revista},\n  year = {2024}\n}"
+                    }
                   />
                 </div>
               </CardContent>
@@ -283,7 +316,7 @@ export default function EditPublicationPage({ params }: PageProps) {
                 ) : (
                   <>
                     <Save className="h-4 w-4 mr-2" />
-                    {isNew ? 'Criar Publicação' : 'Salvar Alterações'}
+                    {isNew ? "Criar Publicação" : "Salvar Alterações"}
                   </>
                 )}
               </Button>
@@ -295,5 +328,5 @@ export default function EditPublicationPage({ params }: PageProps) {
         </div>
       </main>
     </div>
-  )
+  );
 }

@@ -1,103 +1,115 @@
-'use client'
+"use client";
 
-import { useState, useEffect, use } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft, Save, Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
-import { AdminSidebar } from '@/components/admin-sidebar'
-import { ImageUploader } from '@/components/image-uploader'
-import { createClient } from '@/lib/supabase/client'
+import { useState, useEffect, use } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, Save, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { AdminSidebar } from "@/components/admin-sidebar";
+import { ImageUploader } from "@/components/image-uploader";
+import { createClient } from "@/lib/supabase/client";
 
 interface PageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }
 
 export default function EditMemberPage({ params }: PageProps) {
-  const { id } = use(params)
-  const router = useRouter()
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { id } = use(params);
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
-    name_pt: '',
-    name_en: '',
-    slug: '',
-    role: 'phd',
-    current_role_pt: '',
-    current_role_en: '',
-    bio_pt: '',
-    bio_en: '',
-    email: '',
-    photo_url: '',
-    lattes_url: '',
-    orcid_url: '',
-    linkedin_url: '',
-    github_url: '',
-    website_url: '',
-    google_scholar_url: '',
+    name_pt: "",
+    name_en: "",
+    slug: "",
+    role: "phd",
+    current_role_pt: "",
+    current_role_en: "",
+    bio_pt: "",
+    bio_en: "",
+    email: "",
+    photo_url: "",
+    lattes_url: "",
+    orcid_url: "",
+    linkedin_url: "",
+    github_url: "",
+    website_url: "",
+    scholar_url: "",
     is_active: true,
     display_order: 0,
-  })
+  });
 
   useEffect(() => {
-    fetchMember()
-  }, [id])
+    fetchMember();
+  }, [id]);
 
   const fetchMember = async () => {
     try {
-      const supabase = createClient()
+      const supabase = createClient();
       const { data, error } = await supabase
-        .from('members')
-        .select('*')
-        .eq('id', id)
-        .single()
+        .from("members")
+        .select("*")
+        .eq("id", id)
+        .single();
 
-      if (error) throw error
+      if (error) throw error;
       if (data) {
-        setFormData(data)
+        setFormData(data);
       }
     } catch (err) {
-      console.error('Error fetching member:', err)
-      setError('Erro ao carregar membro')
+      console.error("Error fetching member:", err);
+      setError("Erro ao carregar membro");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSaving(true)
-    setError(null)
+    e.preventDefault();
+    setSaving(true);
+    setError(null);
 
     try {
-      const supabase = createClient()
+      const supabase = createClient();
       const { error } = await supabase
-        .from('members')
+        .from("members")
         .update(formData)
-        .eq('id', id)
+        .eq("id", id);
 
-      if (error) throw error
+      if (error) throw error;
 
-      router.push('/admin/members')
+      router.push("/admin/members");
     } catch (err) {
-      console.error('Error updating member:', err)
-      setError('Erro ao atualizar membro')
+      console.error("Error updating member:", err);
+      setError("Erro ao atualizar membro");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   const handleChange = (field: string, value: string | boolean | number) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   if (loading) {
     return (
@@ -107,7 +119,7 @@ export default function EditMemberPage({ params }: PageProps) {
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </main>
       </div>
-    )
+    );
   }
 
   return (
@@ -125,7 +137,9 @@ export default function EditMemberPage({ params }: PageProps) {
             </Button>
             <div>
               <h1 className="text-2xl font-bold">Editar Membro</h1>
-              <p className="text-muted-foreground">Atualize as informações do membro</p>
+              <p className="text-muted-foreground">
+                Atualize as informações do membro
+              </p>
             </div>
           </div>
 
@@ -140,7 +154,9 @@ export default function EditMemberPage({ params }: PageProps) {
             <Card>
               <CardHeader>
                 <CardTitle>Informações Básicas</CardTitle>
-                <CardDescription>Nome e identificação do membro</CardDescription>
+                <CardDescription>
+                  Nome e identificação do membro
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -149,7 +165,7 @@ export default function EditMemberPage({ params }: PageProps) {
                     <Input
                       id="name_pt"
                       value={formData.name_pt}
-                      onChange={(e) => handleChange('name_pt', e.target.value)}
+                      onChange={(e) => handleChange("name_pt", e.target.value)}
                       required
                     />
                   </div>
@@ -157,8 +173,8 @@ export default function EditMemberPage({ params }: PageProps) {
                     <Label htmlFor="name_en">Nome (EN)</Label>
                     <Input
                       id="name_en"
-                      value={formData.name_en || ''}
-                      onChange={(e) => handleChange('name_en', e.target.value)}
+                      value={formData.name_en || ""}
+                      onChange={(e) => handleChange("name_en", e.target.value)}
                     />
                   </div>
                 </div>
@@ -169,7 +185,7 @@ export default function EditMemberPage({ params }: PageProps) {
                     <Input
                       id="slug"
                       value={formData.slug}
-                      onChange={(e) => handleChange('slug', e.target.value)}
+                      onChange={(e) => handleChange("slug", e.target.value)}
                       required
                     />
                   </div>
@@ -177,7 +193,7 @@ export default function EditMemberPage({ params }: PageProps) {
                     <Label htmlFor="role">Categoria *</Label>
                     <Select
                       value={formData.role}
-                      onValueChange={(value) => handleChange('role', value)}
+                      onValueChange={(value) => handleChange("role", value)}
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -187,7 +203,9 @@ export default function EditMemberPage({ params }: PageProps) {
                         <SelectItem value="postdoc">Pós-Doutorando</SelectItem>
                         <SelectItem value="phd">Doutorando</SelectItem>
                         <SelectItem value="masters">Mestrando</SelectItem>
-                        <SelectItem value="undergrad">Iniciação Científica</SelectItem>
+                        <SelectItem value="undergrad">
+                          Iniciação Científica
+                        </SelectItem>
                         <SelectItem value="alumni">Egresso</SelectItem>
                       </SelectContent>
                     </Select>
@@ -199,8 +217,10 @@ export default function EditMemberPage({ params }: PageProps) {
                     <Label htmlFor="current_role_pt">Cargo Atual (PT)</Label>
                     <Input
                       id="current_role_pt"
-                      value={formData.current_role_pt || ''}
-                      onChange={(e) => handleChange('current_role_pt', e.target.value)}
+                      value={formData.current_role_pt || ""}
+                      onChange={(e) =>
+                        handleChange("current_role_pt", e.target.value)
+                      }
                       placeholder="Ex: Professor Associado"
                     />
                   </div>
@@ -208,8 +228,10 @@ export default function EditMemberPage({ params }: PageProps) {
                     <Label htmlFor="current_role_en">Cargo Atual (EN)</Label>
                     <Input
                       id="current_role_en"
-                      value={formData.current_role_en || ''}
-                      onChange={(e) => handleChange('current_role_en', e.target.value)}
+                      value={formData.current_role_en || ""}
+                      onChange={(e) =>
+                        handleChange("current_role_en", e.target.value)
+                      }
                       placeholder="Ex: Associate Professor"
                     />
                   </div>
@@ -218,8 +240,8 @@ export default function EditMemberPage({ params }: PageProps) {
                 <div className="space-y-2">
                   <Label>Foto</Label>
                   <ImageUploader
-                    value={formData.photo_url || ''}
-                    onChange={(url) => handleChange('photo_url', url || '')}
+                    value={formData.photo_url || ""}
+                    onChange={(url) => handleChange("photo_url", url || "")}
                   />
                 </div>
               </CardContent>
@@ -236,8 +258,8 @@ export default function EditMemberPage({ params }: PageProps) {
                   <Label htmlFor="bio_pt">Biografia (PT)</Label>
                   <Textarea
                     id="bio_pt"
-                    value={formData.bio_pt || ''}
-                    onChange={(e) => handleChange('bio_pt', e.target.value)}
+                    value={formData.bio_pt || ""}
+                    onChange={(e) => handleChange("bio_pt", e.target.value)}
                     rows={5}
                   />
                 </div>
@@ -245,8 +267,8 @@ export default function EditMemberPage({ params }: PageProps) {
                   <Label htmlFor="bio_en">Biografia (EN)</Label>
                   <Textarea
                     id="bio_en"
-                    value={formData.bio_en || ''}
-                    onChange={(e) => handleChange('bio_en', e.target.value)}
+                    value={formData.bio_en || ""}
+                    onChange={(e) => handleChange("bio_en", e.target.value)}
                     rows={5}
                   />
                 </div>
@@ -257,7 +279,9 @@ export default function EditMemberPage({ params }: PageProps) {
             <Card>
               <CardHeader>
                 <CardTitle>Links Externos</CardTitle>
-                <CardDescription>Perfis acadêmicos e redes sociais</CardDescription>
+                <CardDescription>
+                  Perfis acadêmicos e redes sociais
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -266,8 +290,8 @@ export default function EditMemberPage({ params }: PageProps) {
                     <Input
                       id="email"
                       type="email"
-                      value={formData.email || ''}
-                      onChange={(e) => handleChange('email', e.target.value)}
+                      value={formData.email || ""}
+                      onChange={(e) => handleChange("email", e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">
@@ -275,8 +299,10 @@ export default function EditMemberPage({ params }: PageProps) {
                     <Input
                       id="lattes_url"
                       type="url"
-                      value={formData.lattes_url || ''}
-                      onChange={(e) => handleChange('lattes_url', e.target.value)}
+                      value={formData.lattes_url || ""}
+                      onChange={(e) =>
+                        handleChange("lattes_url", e.target.value)
+                      }
                     />
                   </div>
                   <div className="space-y-2">
@@ -284,17 +310,21 @@ export default function EditMemberPage({ params }: PageProps) {
                     <Input
                       id="orcid_url"
                       type="url"
-                      value={formData.orcid_url || ''}
-                      onChange={(e) => handleChange('orcid_url', e.target.value)}
+                      value={formData.orcid_url || ""}
+                      onChange={(e) =>
+                        handleChange("orcid_url", e.target.value)
+                      }
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="google_scholar_url">Google Scholar</Label>
+                    <Label htmlFor="scholar_url">Google Scholar</Label>
                     <Input
-                      id="google_scholar_url"
+                      id="scholar_url"
                       type="url"
-                      value={formData.google_scholar_url || ''}
-                      onChange={(e) => handleChange('google_scholar_url', e.target.value)}
+                      value={formData.scholar_url || ""}
+                      onChange={(e) =>
+                        handleChange("scholar_url", e.target.value)
+                      }
                     />
                   </div>
                   <div className="space-y-2">
@@ -302,8 +332,10 @@ export default function EditMemberPage({ params }: PageProps) {
                     <Input
                       id="linkedin_url"
                       type="url"
-                      value={formData.linkedin_url || ''}
-                      onChange={(e) => handleChange('linkedin_url', e.target.value)}
+                      value={formData.linkedin_url || ""}
+                      onChange={(e) =>
+                        handleChange("linkedin_url", e.target.value)
+                      }
                     />
                   </div>
                   <div className="space-y-2">
@@ -311,8 +343,10 @@ export default function EditMemberPage({ params }: PageProps) {
                     <Input
                       id="github_url"
                       type="url"
-                      value={formData.github_url || ''}
-                      onChange={(e) => handleChange('github_url', e.target.value)}
+                      value={formData.github_url || ""}
+                      onChange={(e) =>
+                        handleChange("github_url", e.target.value)
+                      }
                     />
                   </div>
                   <div className="space-y-2">
@@ -320,8 +354,10 @@ export default function EditMemberPage({ params }: PageProps) {
                     <Input
                       id="website_url"
                       type="url"
-                      value={formData.website_url || ''}
-                      onChange={(e) => handleChange('website_url', e.target.value)}
+                      value={formData.website_url || ""}
+                      onChange={(e) =>
+                        handleChange("website_url", e.target.value)
+                      }
                     />
                   </div>
                 </div>
@@ -343,7 +379,9 @@ export default function EditMemberPage({ params }: PageProps) {
                   </div>
                   <Switch
                     checked={formData.is_active}
-                    onCheckedChange={(checked) => handleChange('is_active', checked)}
+                    onCheckedChange={(checked) =>
+                      handleChange("is_active", checked)
+                    }
                   />
                 </div>
                 <div className="space-y-2">
@@ -352,7 +390,12 @@ export default function EditMemberPage({ params }: PageProps) {
                     id="display_order"
                     type="number"
                     value={formData.display_order}
-                    onChange={(e) => handleChange('display_order', parseInt(e.target.value) || 0)}
+                    onChange={(e) =>
+                      handleChange(
+                        "display_order",
+                        parseInt(e.target.value) || 0,
+                      )
+                    }
                     className="w-32"
                   />
                 </div>
@@ -382,5 +425,5 @@ export default function EditMemberPage({ params }: PageProps) {
         </div>
       </main>
     </div>
-  )
+  );
 }

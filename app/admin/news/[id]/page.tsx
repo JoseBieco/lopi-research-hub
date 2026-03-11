@@ -1,104 +1,115 @@
-'use client'
+"use client";
 
-import { useState, useEffect, use } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft, Save, Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
-import { AdminSidebar } from '@/components/admin-sidebar'
-import { ImageUploader } from '@/components/image-uploader'
-import { createClient } from '@/lib/supabase/client'
+import { useState, useEffect, use } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, Save, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { AdminSidebar } from "@/components/admin-sidebar";
+import { ImageUploader } from "@/components/image-uploader";
+import { createClient } from "@/lib/supabase/client";
 
 interface PageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }
 
 export default function EditNewsPage({ params }: PageProps) {
-  const { id } = use(params)
-  const router = useRouter()
-  const isNew = id === 'new'
-  const [loading, setLoading] = useState(!isNew)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { id } = use(params);
+  const router = useRouter();
+  const isNew = id === "new";
+  const [loading, setLoading] = useState(!isNew);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
-    title_pt: '',
-    title_en: '',
-    slug: '',
-    excerpt_pt: '',
-    excerpt_en: '',
-    content_pt: '',
-    content_en: '',
-    type: 'general',
-    cover_image_url: '',
+    title_pt: "",
+    title_en: "",
+    slug: "",
+    excerpt_pt: "",
+    excerpt_en: "",
+    content_pt: "",
+    content_en: "",
+    news_type: "general",
+    cover_image_url: "",
     is_published: false,
-    published_at: new Date().toISOString().split('T')[0],
-  })
+    published_at: new Date().toISOString().split("T")[0],
+  });
 
   useEffect(() => {
     if (!isNew) {
-      fetchNews()
+      fetchNews();
     }
-  }, [id, isNew])
+  }, [id, isNew]);
 
   const fetchNews = async () => {
     try {
-      const supabase = createClient()
+      const supabase = createClient();
       const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .eq('id', id)
-        .single()
+        .from("news")
+        .select("*")
+        .eq("id", id)
+        .single();
 
-      if (error) throw error
+      if (error) throw error;
       if (data) {
         setFormData({
           ...data,
-          published_at: data.published_at?.split('T')[0] || new Date().toISOString().split('T')[0],
-        })
+          published_at:
+            data.published_at?.split("T")[0] ||
+            new Date().toISOString().split("T")[0],
+        });
       }
     } catch (err) {
-      console.error('Error fetching news:', err)
-      setError('Erro ao carregar notícia')
+      console.error("Error fetching news:", err);
+      setError("Erro ao carregar notícia");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSaving(true)
-    setError(null)
+    e.preventDefault();
+    setSaving(true);
+    setError(null);
 
     try {
-      const supabase = createClient()
+      const supabase = createClient();
 
       if (isNew) {
-        const { error } = await supabase.from('news').insert([formData])
-        if (error) throw error
+        const { error } = await supabase.from("news").insert([formData]);
+        if (error) throw error;
       } else {
-        const { error } = await supabase.from('news').update(formData).eq('id', id)
-        if (error) throw error
+        const { error } = await supabase
+          .from("news")
+          .update(formData)
+          .eq("id", id);
+        if (error) throw error;
       }
 
-      router.push('/admin/news')
+      router.push("/admin/news");
     } catch (err) {
-      console.error('Error saving news:', err)
-      setError('Erro ao salvar notícia')
+      console.error("Error saving news:", err);
+      setError("Erro ao salvar notícia");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   const handleChange = (field: string, value: string | boolean) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   if (loading) {
     return (
@@ -108,7 +119,7 @@ export default function EditNewsPage({ params }: PageProps) {
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </main>
       </div>
-    )
+    );
   }
 
   return (
@@ -126,10 +137,10 @@ export default function EditNewsPage({ params }: PageProps) {
             </Button>
             <div>
               <h1 className="text-2xl font-bold">
-                {isNew ? 'Nova Notícia' : 'Editar Notícia'}
+                {isNew ? "Nova Notícia" : "Editar Notícia"}
               </h1>
               <p className="text-muted-foreground">
-                {isNew ? 'Crie uma nova notícia' : 'Atualize as informações'}
+                {isNew ? "Crie uma nova notícia" : "Atualize as informações"}
               </p>
             </div>
           </div>
@@ -153,7 +164,7 @@ export default function EditNewsPage({ params }: PageProps) {
                     <Input
                       id="title_pt"
                       value={formData.title_pt}
-                      onChange={(e) => handleChange('title_pt', e.target.value)}
+                      onChange={(e) => handleChange("title_pt", e.target.value)}
                       required
                     />
                   </div>
@@ -161,8 +172,8 @@ export default function EditNewsPage({ params }: PageProps) {
                     <Label htmlFor="title_en">Título (EN)</Label>
                     <Input
                       id="title_en"
-                      value={formData.title_en || ''}
-                      onChange={(e) => handleChange('title_en', e.target.value)}
+                      value={formData.title_en || ""}
+                      onChange={(e) => handleChange("title_en", e.target.value)}
                     />
                   </div>
                 </div>
@@ -173,15 +184,17 @@ export default function EditNewsPage({ params }: PageProps) {
                     <Input
                       id="slug"
                       value={formData.slug}
-                      onChange={(e) => handleChange('slug', e.target.value)}
+                      onChange={(e) => handleChange("slug", e.target.value)}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="type">Tipo *</Label>
+                    <Label htmlFor="news_type">Tipo *</Label>
                     <Select
-                      value={formData.type}
-                      onValueChange={(value) => handleChange('type', value)}
+                      value={formData.news_type}
+                      onValueChange={(value) =>
+                        handleChange("news_type", value)
+                      }
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -205,7 +218,9 @@ export default function EditNewsPage({ params }: PageProps) {
                       id="published_at"
                       type="date"
                       value={formData.published_at}
-                      onChange={(e) => handleChange('published_at', e.target.value)}
+                      onChange={(e) =>
+                        handleChange("published_at", e.target.value)
+                      }
                     />
                   </div>
                   <div className="flex items-center justify-between pt-8">
@@ -217,7 +232,9 @@ export default function EditNewsPage({ params }: PageProps) {
                     </div>
                     <Switch
                       checked={formData.is_published}
-                      onCheckedChange={(checked) => handleChange('is_published', checked)}
+                      onCheckedChange={(checked) =>
+                        handleChange("is_published", checked)
+                      }
                     />
                   </div>
                 </div>
@@ -225,8 +242,10 @@ export default function EditNewsPage({ params }: PageProps) {
                 <div className="space-y-2">
                   <Label>Imagem de Capa</Label>
                   <ImageUploader
-                    value={formData.cover_image_url || ''}
-                    onChange={(url) => handleChange('cover_image_url', url || '')}
+                    value={formData.cover_image_url || ""}
+                    onChange={(url) =>
+                      handleChange("cover_image_url", url || "")
+                    }
                   />
                 </div>
               </CardContent>
@@ -242,8 +261,8 @@ export default function EditNewsPage({ params }: PageProps) {
                   <Label htmlFor="excerpt_pt">Resumo (PT)</Label>
                   <Textarea
                     id="excerpt_pt"
-                    value={formData.excerpt_pt || ''}
-                    onChange={(e) => handleChange('excerpt_pt', e.target.value)}
+                    value={formData.excerpt_pt || ""}
+                    onChange={(e) => handleChange("excerpt_pt", e.target.value)}
                     rows={3}
                     placeholder="Breve descrição que aparece na listagem"
                   />
@@ -252,8 +271,8 @@ export default function EditNewsPage({ params }: PageProps) {
                   <Label htmlFor="excerpt_en">Resumo (EN)</Label>
                   <Textarea
                     id="excerpt_en"
-                    value={formData.excerpt_en || ''}
-                    onChange={(e) => handleChange('excerpt_en', e.target.value)}
+                    value={formData.excerpt_en || ""}
+                    onChange={(e) => handleChange("excerpt_en", e.target.value)}
                     rows={3}
                   />
                 </div>
@@ -270,8 +289,8 @@ export default function EditNewsPage({ params }: PageProps) {
                   <Label htmlFor="content_pt">Conteúdo (PT)</Label>
                   <Textarea
                     id="content_pt"
-                    value={formData.content_pt || ''}
-                    onChange={(e) => handleChange('content_pt', e.target.value)}
+                    value={formData.content_pt || ""}
+                    onChange={(e) => handleChange("content_pt", e.target.value)}
                     rows={10}
                   />
                 </div>
@@ -279,8 +298,8 @@ export default function EditNewsPage({ params }: PageProps) {
                   <Label htmlFor="content_en">Conteúdo (EN)</Label>
                   <Textarea
                     id="content_en"
-                    value={formData.content_en || ''}
-                    onChange={(e) => handleChange('content_en', e.target.value)}
+                    value={formData.content_en || ""}
+                    onChange={(e) => handleChange("content_en", e.target.value)}
                     rows={10}
                   />
                 </div>
@@ -298,7 +317,7 @@ export default function EditNewsPage({ params }: PageProps) {
                 ) : (
                   <>
                     <Save className="h-4 w-4 mr-2" />
-                    {isNew ? 'Criar Notícia' : 'Salvar Alterações'}
+                    {isNew ? "Criar Notícia" : "Salvar Alterações"}
                   </>
                 )}
               </Button>
@@ -310,5 +329,5 @@ export default function EditNewsPage({ params }: PageProps) {
         </div>
       </main>
     </div>
-  )
+  );
 }

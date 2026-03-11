@@ -17,7 +17,17 @@
   "home": {
     "title": "Academic Platform",
     "subtitle": "Research Group",
-    "hero_text": "We centralize the scientific production and tools of our research group"
+    "hero_text": "We centralize the scientific production and tools of our research group",
+    "research_group": "Explore the Research Group",
+    "team_description": "Meet the group members, from faculty to undergraduate research students.",
+    "see_team": "View team →",
+    "publications_description": "Access articles in journals, conferences, and book chapters published by the group.",
+    "see_publications": "View publications →",
+    "tools_description": "Explore the open-source platforms and software developed by the group.",
+    "see_tools": "View tools →",
+    "latest_news": "Latest News",
+    "latest_news_description": "Stay up-to-date with the group's latest events: defenses, awards, and featured publications.",
+    "see_news": "View news"
   },
   "team": {
     "title": "Our Team",
@@ -63,5 +73,6 @@
     "publications": "Manage Publications",
     "tools": "Manage Tools",
     "news": "Manage News"
-  }
+  },
+  "skip_main_content": "Skip to main content"
 }

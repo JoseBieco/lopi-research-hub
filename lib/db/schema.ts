@@ -106,9 +106,12 @@ export const dbSchema = {
       slug TEXT UNIQUE NOT NULL,
       title_pt TEXT NOT NULL,
       title_en TEXT,
+      excerpt_pt TEXT,
+      excerpt_en TEXT,
       content_pt TEXT,
       content_en TEXT,
-      news_type TEXT CHECK (news_type IN ('defense', 'award', 'publication', 'grant', 'general')),
+      cover_image_url TEXT,
+      news_type TEXT CHECK (news_type IN ('defense', 'award', 'publication', 'grant', 'general', 'event')), -- Adicionado 'event'
       published_at TIMESTAMPTZ DEFAULT now(),
       is_published BOOLEAN DEFAULT false,
       created_at TIMESTAMPTZ DEFAULT now(),
@@ -162,7 +165,7 @@ export const dbSchema = {
       PRIMARY KEY (tool_id, member_id)
     );
   `,
-}
+};
 
 // Row Level Security (RLS) policies
 export const rlsPolicies = {
@@ -196,10 +199,10 @@ export const rlsPolicies = {
     ALTER TABLE news ENABLE ROW LEVEL SECURITY;
     CREATE POLICY "Allow public read" ON news FOR SELECT USING (true);
   `,
-}
+};
 
 // All statements in order
 export const allStatements = [
   ...Object.values(dbSchema),
   ...Object.values(rlsPolicies),
-]
+];
