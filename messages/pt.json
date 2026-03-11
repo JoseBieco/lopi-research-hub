@@ -75,5 +75,8 @@
     "publications": "Gerenciar Publicações",
     "tools": "Gerenciar Ferramentas",
     "news": "Gerenciar Notícias"
+  },
+  "news": {
+    "seminar": "Seminário"
   }
 }
