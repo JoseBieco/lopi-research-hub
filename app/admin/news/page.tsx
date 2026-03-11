@@ -65,6 +65,8 @@ export default function NewsAdminPage() {
     publication: "Publicação",
     grant: "Edital",
     general: "Geral",
+    seminar: "Seminário",
+    event: "Evento",
   };
 
   return (

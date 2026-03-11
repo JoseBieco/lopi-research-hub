@@ -74,6 +74,7 @@ export default async function NewsArticlePage({ params }: PageProps) {
     event: locale === "en" ? "Event" : "Evento",
     grant: locale === "en" ? "Grant" : "Edital",
     general: locale === "en" ? "General" : "Geral",
+    seminar: locale === "en" ? "Seminar" : "Seminário",
   };
 
   const typeColors: Record<string, string> = {

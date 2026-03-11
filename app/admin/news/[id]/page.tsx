@@ -201,6 +201,7 @@ export default function EditNewsPage({ params }: PageProps) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="general">Geral</SelectItem>
+                        <SelectItem value="seminar">Seminário</SelectItem>
                         <SelectItem value="defense">Defesa</SelectItem>
                         <SelectItem value="award">Prêmio</SelectItem>
                         <SelectItem value="publication">Publicação</SelectItem>

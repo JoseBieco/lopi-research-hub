@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS news (
   title_en TEXT,
   content_pt TEXT,
   content_en TEXT,
-  news_type TEXT CHECK (news_type IN ('defense', 'award', 'publication', 'grant', 'general')),
+  news_type TEXT CHECK (news_type IN ('defense', 'award', 'publication', 'grant', 'general', 'seminar')),
   published_at TIMESTAMPTZ DEFAULT now(),
   is_published BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT now(),
