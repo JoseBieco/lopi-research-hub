@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <linearGradient id="gradRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#0ea5e9" />
+    </linearGradient>
+    <linearGradient id="gradGrid1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <linearGradient id="gradGrid2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#14b8a6" />
+      <stop offset="100%" stop-color="#0ea5e9" />
+    </linearGradient>
+  </defs>
+
+  <rect width="120" height="120" rx="24" fill="#ffffff" />
+
+  <!-- Outer Scanner Gantry (Tomography Ring) -->
+  <circle cx="60" cy="60" r="48" stroke="url(#gradRing)" stroke-width="6" stroke-dasharray="70 15 15 15" stroke-linecap="round" fill="none" opacity="0.9" />
+  
+  <!-- Inner Data Track -->
+  <circle cx="60" cy="60" r="38" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 6" fill="none" opacity="0.6" />
+
+  <!-- Reconstructed Image Matrix (Pixels/Voxels) -->
+  <g transform="translate(41, 41)">
+    <rect x="0" y="0" width="10" height="10" rx="2" fill="url(#gradGrid1)" opacity="0.3" />
+    <rect x="14" y="0" width="10" height="10" rx="2" fill="url(#gradGrid1)" opacity="0.6" />
+    <rect x="28" y="0" width="10" height="10" rx="2" fill="url(#gradGrid1)" opacity="0.9" />
+    <rect x="0" y="14" width="10" height="10" rx="2" fill="url(#gradGrid1)" opacity="0.5" />
+    <rect x="14" y="14" width="10" height="10" rx="2" fill="url(#gradGrid2)" opacity="1.0" />
+    <rect x="28" y="14" width="10" height="10" rx="2" fill="url(#gradGrid2)" opacity="0.8" />
+    <rect x="0" y="28" width="10" height="10" rx="2" fill="url(#gradGrid1)" opacity="0.8" />
+    <rect x="14" y="28" width="10" height="10" rx="2" fill="url(#gradGrid2)" opacity="0.9" />
+    <rect x="28" y="28" width="10" height="10" rx="2" fill="url(#gradGrid2)" opacity="0.4" />
+  </g>
+
+  <!-- Scanner Beams (Projections) -->
+  <path d="M 12 60 L 34 60" stroke="#0ea5e9" stroke-width="3" stroke-linecap="round" opacity="0.8" />
+  <path d="M 108 60 L 86 60" stroke="#14b8a6" stroke-width="3" stroke-linecap="round" opacity="0.8" />
+  <path d="M 60 12 L 60 34" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" opacity="0.8" />
+  <path d="M 60 108 L 60 86" stroke="#0ea5e9" stroke-width="3" stroke-linecap="round" opacity="0.8" />
+  
+  <path d="M 26 26 L 40 40" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" opacity="0.5" />
+  <path d="M 94 94 L 80 80" stroke="#14b8a6" stroke-width="2" stroke-linecap="round" opacity="0.5" />
+  <path d="M 26 94 L 40 80" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" opacity="0.3" />
+  <path d="M 94 26 L 80 40" stroke="#14b8a6" stroke-width="2" stroke-linecap="round" opacity="0.3" />
+</svg>
