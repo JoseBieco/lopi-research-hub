@@ -6,7 +6,7 @@ export async function GET() {
 
     const { data, error } = await supabase
       .from("publications")
-      .select("*")
+      .select("id, title, publication_type, year")
       .order("year", { ascending: false })
       .order("created_at", { ascending: false });
 

@@ -1,36 +1,30 @@
-'use client'
-
-import { useTranslations } from 'next-intl'
-import { useState, useEffect } from 'react'
+import { getTranslations } from 'next-intl/server'
 import { MemberCard } from '@/components/member-card'
 import type { MemberProps } from '@/components/member-card'
+import { createClient } from '@/lib/supabase/server'
+import Link from 'next/link'
 
-export default function TeamPage() {
-  const t = useTranslations()
-  const [members, setMembers] = useState<MemberProps[]>([])
-  const [loading, setLoading] = useState(true)
-  const [selectedRole, setSelectedRole] = useState<string | null>(null)
+export default async function TeamPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale })
 
-  useEffect(() => {
-    // Fetch members from Supabase
-    fetchMembers()
-  }, [])
+  // Fetch members from Supabase directly via Server Component
+  const supabase = await createClient()
+  const { data: membersData } = await supabase
+    .from('members')
+    .select("id, slug, name_pt, name_en, role, photo_url, email, lattes_url, linkedin_url, github_url, orcid_url, scholar_url, display_order")
+    .eq('is_active', true)
+    .order('display_order', { ascending: true })
+    .order('name_pt', { ascending: true })
 
-  const fetchMembers = async () => {
-    try {
-      const response = await fetch('/api/members')
-      if (response.ok) {
-        const data = await response.json()
-        setMembers(data)
-      }
-    } catch (error) {
-      console.error('Error fetching members:', error)
-      // For now, show empty state
-      setMembers([])
-    } finally {
-      setLoading(false)
-    }
-  }
+  const members: MemberProps[] = (membersData || []).map((m: any) => ({
+    ...m,
+    locale: locale as 'pt' | 'en',
+  }))
 
   const roleLabels = {
     professor: t('team.professors'),
@@ -52,7 +46,7 @@ export default function TeamPage() {
 
   const groupedMembers = roles.reduce(
     (acc, role) => {
-      acc[role] = members.filter((m) => m.role === role && m.is_active !== false)
+      acc[role] = members.filter((m) => m.role === role)
       return acc
     },
     {} as Record<string, MemberProps[]>
@@ -75,18 +69,14 @@ export default function TeamPage() {
       {/* Members by Role */}
       <section className="py-12 md:py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {loading ? (
-            <div className="text-center py-12">
-              <p className="text-slate-600">Carregando membros...</p>
-            </div>
-          ) : members.length === 0 ? (
+          {members.length === 0 ? (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-8 text-center">
               <p className="text-slate-600 mb-4">
                 A equipe ainda não foi adicionada. Use o painel administrativo para adicionar membros.
               </p>
-              <a href="/admin/login" className="text-blue-600 hover:text-blue-700 font-medium">
+              <Link href="/admin/login" className="text-blue-600 hover:text-blue-700 font-medium">
                 Ir para Administração
-              </a>
+              </Link>
             </div>
           ) : (
             <>

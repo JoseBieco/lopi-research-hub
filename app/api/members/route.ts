@@ -6,7 +6,7 @@ export async function GET() {
 
     const { data, error } = await supabase
       .from("members")
-      .select("*")
+      .select("id, name_pt, role, email, is_active")
       .eq("is_active", true)
       .order("display_order", { ascending: true })
       .order("name_pt", { ascending: true });

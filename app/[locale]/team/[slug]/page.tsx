@@ -265,13 +265,7 @@ export default async function MemberProfilePage({ params }: PageProps) {
               </h2>
               <div className="grid gap-4">
                 {projects.map(
-                  (project: {
-                    id: string;
-                    slug: string;
-                    title_pt: string;
-                    title_en: string;
-                    status: string;
-                  }) => (
+                  (project: any) => (
                     <Card key={project.id}>
                       <CardContent className="p-4">
                         <div className="flex items-center justify-between gap-4">
@@ -315,14 +309,7 @@ export default async function MemberProfilePage({ params }: PageProps) {
               </h2>
               <div className="space-y-4">
                 {publications.map(
-                  (pub: {
-                    id: string;
-                    title: string;
-                    authors: string;
-                    year: number;
-                    publication_type: string;
-                    doi?: string;
-                  }) => (
+                  (pub: any) => (
                     <Card key={pub.id}>
                       <CardContent className="p-4">
                         <div className="space-y-1">
@@ -368,3 +355,4 @@ export default async function MemberProfilePage({ params }: PageProps) {
     </main>
   );
 }
+

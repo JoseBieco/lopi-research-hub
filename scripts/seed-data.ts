@@ -207,7 +207,7 @@ async function seedDatabase() {
       headers: {
         Authorization: `Bearer ${supabaseServiceKey}`,
         'Content-Type': 'application/json',
-        apikey: supabaseServiceKey,
+        apikey: supabaseServiceKey || "",
       },
       body: JSON.stringify(sampleData.members),
     })
@@ -225,7 +225,7 @@ async function seedDatabase() {
       headers: {
         Authorization: `Bearer ${supabaseServiceKey}`,
         'Content-Type': 'application/json',
-        apikey: supabaseServiceKey,
+        apikey: supabaseServiceKey || "",
       },
       body: JSON.stringify(sampleData.research_areas),
     })
@@ -243,7 +243,7 @@ async function seedDatabase() {
       headers: {
         Authorization: `Bearer ${supabaseServiceKey}`,
         'Content-Type': 'application/json',
-        apikey: supabaseServiceKey,
+        apikey: supabaseServiceKey || "",
       },
       body: JSON.stringify(
         sampleData.projects.map((p) => ({
@@ -267,7 +267,7 @@ async function seedDatabase() {
       headers: {
         Authorization: `Bearer ${supabaseServiceKey}`,
         'Content-Type': 'application/json',
-        apikey: supabaseServiceKey,
+        apikey: supabaseServiceKey || "",
       },
       body: JSON.stringify(sampleData.publications),
     })
@@ -285,7 +285,7 @@ async function seedDatabase() {
       headers: {
         Authorization: `Bearer ${supabaseServiceKey}`,
         'Content-Type': 'application/json',
-        apikey: supabaseServiceKey,
+        apikey: supabaseServiceKey || "",
       },
       body: JSON.stringify(sampleData.tools),
     })
@@ -303,7 +303,7 @@ async function seedDatabase() {
       headers: {
         Authorization: `Bearer ${supabaseServiceKey}`,
         'Content-Type': 'application/json',
-        apikey: supabaseServiceKey,
+        apikey: supabaseServiceKey || "",
       },
       body: JSON.stringify(
         sampleData.news.map((n) => ({

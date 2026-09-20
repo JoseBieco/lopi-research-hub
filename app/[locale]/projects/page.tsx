@@ -1,33 +1,28 @@
-'use client'
+import { getTranslations } from 'next-intl/server'
+import { createClient } from '@/lib/supabase/server'
+import Link from 'next/link'
 
-import { useTranslations } from 'next-intl'
-import { useState, useEffect } from 'react'
+export default async function ProjectsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale })
 
-export default function ProjectsPage() {
-  const t = useTranslations()
-  const [projects, setProjects] = useState([])
-  const [loading, setLoading] = useState(true)
+  const supabase = await createClient()
+  const { data: projectsData } = await supabase
+    .from('projects')
+    .select("id, title_pt, title_en, description_pt, description_en, status, funding_agency, start_date")
+    .order('start_date', { ascending: false })
 
-  useEffect(() => {
-    fetchProjects()
-  }, [])
-
-  const fetchProjects = async () => {
-    try {
-      const response = await fetch('/api/projects')
-      if (response.ok) {
-        const data = await response.json()
-        setProjects(data)
-      }
-    } catch (error) {
-      console.error('Error fetching projects:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const projects = projectsData || []
 
   const inProgress = projects.filter((p: any) => p.status === 'in_progress')
   const completed = projects.filter((p: any) => p.status === 'completed')
+
+  const getTitle = (project: any) => locale === 'en' && project.title_en ? project.title_en : project.title_pt
+  const getDescription = (project: any) => locale === 'en' && project.description_en ? project.description_en : project.description_pt
 
   return (
     <main id="main-content" className="flex-1">
@@ -43,16 +38,12 @@ export default function ProjectsPage() {
       {/* Projects Section */}
       <section className="py-12 md:py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {loading ? (
-            <div className="text-center py-12">
-              <p className="text-slate-600">Carregando projetos...</p>
-            </div>
-          ) : projects.length === 0 ? (
+          {projects.length === 0 ? (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-8 text-center">
               <p className="text-slate-600 mb-4">Nenhum projeto disponível no momento.</p>
-              <a href="/admin/login" className="text-blue-600 hover:text-blue-700 font-medium">
+              <Link href="/admin/login" className="text-blue-600 hover:text-blue-700 font-medium">
                 Ir para Administração
-              </a>
+              </Link>
             </div>
           ) : (
             <>
@@ -68,10 +59,10 @@ export default function ProjectsPage() {
                         className="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow"
                       >
                         <h3 className="text-2xl font-bold mb-4 text-slate-900">
-                          {project.title_pt}
+                          {getTitle(project)}
                         </h3>
-                        {project.description_pt && (
-                          <p className="text-slate-600 mb-4">{project.description_pt}</p>
+                        {getDescription(project) && (
+                          <p className="text-slate-600 mb-4">{getDescription(project)}</p>
                         )}
                         {project.funding_agency && (
                           <p className="text-sm text-slate-500">
@@ -96,10 +87,10 @@ export default function ProjectsPage() {
                         className="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow opacity-75"
                       >
                         <h3 className="text-2xl font-bold mb-4 text-slate-900">
-                          {project.title_pt}
+                          {getTitle(project)}
                         </h3>
-                        {project.description_pt && (
-                          <p className="text-slate-600 mb-4">{project.description_pt}</p>
+                        {getDescription(project) && (
+                          <p className="text-slate-600 mb-4">{getDescription(project)}</p>
                         )}
                         {project.funding_agency && (
                           <p className="text-sm text-slate-500">

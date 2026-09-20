@@ -6,7 +6,7 @@ export async function GET() {
 
     const { data, error } = await supabase
       .from("projects")
-      .select("*")
+      .select("id, title_pt, status, funding_agency, start_date")
       .order("created_at", { ascending: false });
 
     if (error) {

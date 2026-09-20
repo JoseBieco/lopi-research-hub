@@ -6,7 +6,7 @@ export async function GET() {
 
     const { data, error } = await supabase
       .from("news")
-      .select("*")
+      .select("id, title_pt, news_type, published_at, is_published")
       .eq("is_published", true)
       .order("published_at", { ascending: false });
 

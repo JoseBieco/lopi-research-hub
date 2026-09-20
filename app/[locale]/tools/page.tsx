@@ -1,33 +1,28 @@
-'use client'
+import { getTranslations } from 'next-intl/server'
+import { createClient } from '@/lib/supabase/server'
+import Link from 'next/link'
+import Image from 'next/image'
 
-import { useTranslations } from 'next-intl'
-import { useState, useEffect } from 'react'
+export default async function ToolsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale })
 
-export default function ToolsPage() {
-  const t = useTranslations()
-  const [tools, setTools] = useState([])
-  const [loading, setLoading] = useState(true)
+  const supabase = await createClient()
+  const { data: toolsData } = await supabase
+    .from('tools')
+    .select("id, name, description_pt, description_en, is_featured, image_url, tool_url, github_url, docs_url, created_at")
+    .order('created_at', { ascending: false })
 
-  useEffect(() => {
-    fetchTools()
-  }, [])
-
-  const fetchTools = async () => {
-    try {
-      const response = await fetch('/api/tools')
-      if (response.ok) {
-        const data = await response.json()
-        setTools(data)
-      }
-    } catch (error) {
-      console.error('Error fetching tools:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const tools = toolsData || []
 
   const featured = tools.filter((t: any) => t.is_featured)
   const others = tools.filter((t: any) => !t.is_featured)
+
+  const getDescription = (tool: any) => locale === 'en' && tool.description_en ? tool.description_en : tool.description_pt
 
   return (
     <main id="main-content" className="flex-1">
@@ -55,14 +50,18 @@ export default function ToolsPage() {
                   className="bg-white rounded-lg shadow-lg p-8 border-2 border-yellow-400"
                 >
                   {tool.image_url && (
-                    <img
-                      src={tool.image_url}
-                      alt={tool.name}
-                      className="w-full h-48 object-cover rounded-lg mb-4"
-                    />
+                    <div className="relative w-full h-48 mb-4">
+                      <Image
+                        src={tool.image_url}
+                        alt={tool.name}
+                        fill
+                        className="object-cover rounded-lg"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
                   )}
                   <h3 className="text-2xl font-bold text-slate-900 mb-3">{tool.name}</h3>
-                  <p className="text-slate-600 mb-4">{tool.description_pt}</p>
+                  <p className="text-slate-600 mb-4">{getDescription(tool)}</p>
 
                   <div className="flex flex-wrap gap-3 pt-4 border-t">
                     {tool.tool_url && (
@@ -106,13 +105,12 @@ export default function ToolsPage() {
       {/* All Tools */}
       <section className="py-12 md:py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {loading ? (
-            <div className="text-center py-12">
-              <p className="text-slate-600">Carregando ferramentas...</p>
-            </div>
-          ) : tools.length === 0 ? (
+          {tools.length === 0 ? (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-8 text-center">
-              <p className="text-slate-600 mb-4">Nenhuma ferramenta disponível.</p>
+              <p className="text-slate-600 mb-4">Nenhuma ferramenta disponível no momento.</p>
+              <Link href="/admin/login" className="text-blue-600 hover:text-blue-700 font-medium">
+                Ir para Administração
+              </Link>
             </div>
           ) : (
             <>
@@ -128,14 +126,18 @@ export default function ToolsPage() {
                         className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
                       >
                         {tool.image_url && (
-                          <img
-                            src={tool.image_url}
-                            alt={tool.name}
-                            className="w-full h-32 object-cover rounded-lg mb-4"
-                          />
+                          <div className="relative w-full h-32 mb-4">
+                            <Image
+                              src={tool.image_url}
+                              alt={tool.name}
+                              fill
+                              className="object-cover rounded-lg"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            />
+                          </div>
                         )}
                         <h3 className="text-lg font-bold text-slate-900 mb-2">{tool.name}</h3>
-                        <p className="text-slate-600 text-sm mb-4">{tool.description_pt}</p>
+                        <p className="text-slate-600 text-sm mb-4">{getDescription(tool)}</p>
 
                         <div className="flex gap-2">
                           {tool.tool_url && (
@@ -145,7 +147,7 @@ export default function ToolsPage() {
                               rel="noopener noreferrer"
                               className="text-sm text-blue-600 hover:text-blue-700 font-medium"
                             >
-                              Acessar
+                              {t('tools.access')}
                             </a>
                           )}
                           {tool.github_url && (
@@ -155,7 +157,7 @@ export default function ToolsPage() {
                               rel="noopener noreferrer"
                               className="text-sm text-blue-600 hover:text-blue-700 font-medium"
                             >
-                              GitHub
+                              {t('tools.github')}
                             </a>
                           )}
                         </div>

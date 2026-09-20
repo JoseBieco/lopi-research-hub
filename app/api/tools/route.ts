@@ -6,7 +6,7 @@ export async function GET() {
 
     const { data, error } = await supabase
       .from("tools")
-      .select("*")
+      .select("id, name, is_featured, tool_url")
       .order("is_featured", { ascending: false })
       .order("created_at", { ascending: false });
 

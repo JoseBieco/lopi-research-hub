@@ -16,7 +16,7 @@ export async function updateSession(
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: any[]) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value),
           );
@@ -33,15 +33,16 @@ export async function updateSession(
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Bloqueia a área de admin para utilizadores sem sessão iniciada
+  // Bloqueia a área de admin para utilizadores sem sessão iniciada ou sem cargo de admin
   if (
     request.nextUrl.pathname.startsWith("/admin") &&
-    !request.nextUrl.pathname.startsWith("/admin/login") &&
-    !user
+    !request.nextUrl.pathname.startsWith("/admin/login")
   ) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/admin/login";
-    return NextResponse.redirect(url);
+    if (!user || !user.user_metadata?.is_admin) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin/login";
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse;

@@ -47,7 +47,7 @@ export function PublicationItem({ publication }: PublicationItemProps) {
     journal: {
       label: locale === "en" ? "Journal" : "Periódico",
       icon: BookOpen,
-      className: "bg-blue-100 text-blue-800",
+      className: "bg-indigo-100 text-blue-800",
     },
     conference: {
       label: locale === "en" ? "Conference" : "Conferência",
@@ -189,3 +189,4 @@ export function PublicationItem({ publication }: PublicationItemProps) {
     </article>
   );
 }
+

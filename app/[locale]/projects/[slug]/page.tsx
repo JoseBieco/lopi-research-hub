@@ -266,15 +266,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               </h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {members.map(
-                  (member: {
-                    id: string;
-                    slug: string;
-                    name_pt: string;
-                    name_en: string;
-                    photo_url?: string;
-                    role: string;
-                    projectRole?: string;
-                  }) => (
+                  (member: any) => (
                     <Card
                       key={member.id}
                       className="hover:shadow-md transition-shadow"
@@ -325,14 +317,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
               </h2>
               <div className="space-y-4">
                 {publications.map(
-                  (pub: {
-                    id: string;
-                    title: string;
-                    authors: string;
-                    year: number;
-                    publication_type: string;
-                    doi?: string;
-                  }) => (
+                  (pub: any) => (
                     <Card key={pub.id}>
                       <CardContent className="p-4">
                         <div className="space-y-1">
@@ -367,3 +352,4 @@ export default async function ProjectDetailPage({ params }: PageProps) {
     </main>
   );
 }
+

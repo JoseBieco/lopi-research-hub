@@ -8,14 +8,14 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-slate-900 text-white mt-12">
+    <footer className="bg-indigo-950 text-white mt-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* About */}
           <div>
-            <h3 className="font-bold text-lg mb-4">Plataforma Acadêmica</h3>
-            <p className="text-slate-300 text-sm">
-              Centralizando a produção científica e as ferramentas do grupo de pesquisa.
+            <h3 className="font-bold text-lg mb-4">LOPI</h3>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              Grupo de pesquisa em Otimização e Problemas Inversos, do Instituto de Ciências Matemáticas e de Computação (ICMC-USP), com apoio da FAPESP.
             </p>
           </div>
 
@@ -23,16 +23,16 @@ export function Footer() {
           <div>
             <h4 className="font-bold mb-4">Links Rápidos</h4>
             <nav className="flex flex-col space-y-2">
-              <Link href="/team" className="text-slate-300 hover:text-white text-sm">
+              <Link href="/team" className="text-slate-300 hover:text-white text-sm transition-colors">
                 {t('common.team')}
               </Link>
-              <Link href="/projects" className="text-slate-300 hover:text-white text-sm">
+              <Link href="/projects" className="text-slate-300 hover:text-white text-sm transition-colors">
                 {t('common.projects')}
               </Link>
-              <Link href="/publications" className="text-slate-300 hover:text-white text-sm">
+              <Link href="/publications" className="text-slate-300 hover:text-white text-sm transition-colors">
                 {t('common.publications')}
               </Link>
-              <Link href="/tools" className="text-slate-300 hover:text-white text-sm">
+              <Link href="/tools" className="text-slate-300 hover:text-white text-sm transition-colors">
                 {t('common.tools')}
               </Link>
             </nav>
@@ -42,10 +42,7 @@ export function Footer() {
           <div>
             <h4 className="font-bold mb-4">{t('common.research_areas')}</h4>
             <nav className="flex flex-col space-y-2">
-              <Link href="/research-areas" className="text-slate-300 hover:text-white text-sm">
-                Ver todas
-              </Link>
-              <Link href="/news" className="text-slate-300 hover:text-white text-sm">
+              <Link href="/news" className="text-slate-300 hover:text-white text-sm transition-colors">
                 {t('common.news')}
               </Link>
             </nav>
@@ -57,26 +54,18 @@ export function Footer() {
             <p className="text-slate-300 text-sm mb-2">
               Entre em contato conosco para colaborações ou dúvidas.
             </p>
-            <a href="mailto:contact@example.com" className="text-blue-400 hover:text-blue-300 text-sm">
-              contact@example.com
+            <a href="mailto:helou@icmc.usp.br" className="text-teal-400 hover:text-teal-300 text-sm transition-colors">
+              helou@icmc.usp.br
             </a>
           </div>
         </div>
 
         {/* Divider */}
-        <hr className="border-slate-700 mb-8" />
+        <hr className="border-indigo-800/50 mb-8" />
 
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-center text-slate-400 text-sm">
-          <p>&copy; {currentYear} Grupo de Pesquisa. Todos os direitos reservados.</p>
-          <nav className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="/privacy" className="hover:text-white">
-              Privacidade
-            </Link>
-            <Link href="/terms" className="hover:text-white">
-              Termos de Uso
-            </Link>
-          </nav>
+          <p>&copy; {currentYear} LOPI ICMC-USP. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>
