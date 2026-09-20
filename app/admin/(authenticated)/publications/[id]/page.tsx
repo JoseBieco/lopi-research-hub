@@ -3,6 +3,8 @@
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "sonner";
+
 import { ArrowLeft, Save, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AdminSidebar } from "@/components/admin-sidebar";
 import { createClient } from "@/lib/supabase/client";
 
 interface PageProps {
@@ -107,20 +108,14 @@ export default function EditPublicationPage({ params }: PageProps) {
 
   if (loading) {
     return (
-      <div className="flex h-screen">
-        <AdminSidebar className="w-64 flex-shrink-0" />
-        <main className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex items-center justify-center h-full">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-        </main>
-      </div>
+        </div>
     );
   }
 
   return (
-    <div className="flex h-screen bg-muted/30">
-      <AdminSidebar className="w-64 flex-shrink-0" />
-
-      <main className="flex-1 overflow-auto">
+    <div className="flex-1 overflow-auto bg-muted/30">
         <div className="p-8">
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
@@ -330,7 +325,6 @@ export default function EditPublicationPage({ params }: PageProps) {
             </div>
           </form>
         </div>
-      </main>
-    </div>
+      </div>
   );
 }
